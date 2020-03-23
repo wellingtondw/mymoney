@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import axios from "axios";
 
 const reducer = (state, action) => {
@@ -20,21 +20,21 @@ const reducer = (state, action) => {
   return state;
 };
 
-const useGet = url => {
+const usePost = url => {
   const [data, dispatch] = useReducer(reducer, {
-    loading: true,
+    loading: false,
     data: {}
   });
 
-  useEffect(() => {
+  const post = data => {
     dispatch({ type: "REQUEST" });
-
-    axios.get(url).then(res => {
+    axios.post(url, data).then(res => {
       dispatch({ type: "SUCCESS", data: res.data });
+      console.log(res.data);
     });
-  }, []);
+  };
 
-  return data;
+  return [data, post];
 };
 
-export default useGet;
+export default usePost;
